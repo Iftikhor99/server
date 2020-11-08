@@ -147,9 +147,9 @@ func (s *Server) handle(conn net.Conn) {
 	urlPath := uri.Path
 	partsPath := strings.Split(urlPath, "/")
 	idPath := ""
-	if len(partsPath) == 3 {
-		idPath = partsPath[2]
-	}
+//	if len(partsPath) == 3 {
+		idPath = partsPath[len(partsPath)-1]
+//	}
 		
 	newRequest := &Request{Conn: conn, PathParams: map[string]string{"id":idPath} }
 	

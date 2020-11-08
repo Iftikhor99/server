@@ -147,15 +147,19 @@ func (s *Server) handle(conn net.Conn) {
 	urlPath := uri.Path
 	partsPath := strings.Split(urlPath, "/")
 	idPath := ""
+	newPath := ""
 //	if len(partsPath) == 3 {
 		idPath = partsPath[len(partsPath)-1]
 //	}
-		
+	for i:=0; i < len(partsPath)-1; i++{
+		newPath += partsPath[i] + "/"
+	}	
+	newPath += "{id}"
 	newRequest := &Request{Conn: conn, PathParams: map[string]string{"id":idPath} }
 	
 	//if path == "/" {
 		s.mu.RLock()
-		handler, ok := s.handlers["/payments/{id}"]
+		handler, ok := s.handlers[newPath]
 		//handler := s.handlers["/"]
 		s.mu.RUnlock()
 		if ok == true {

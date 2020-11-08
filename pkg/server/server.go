@@ -141,10 +141,56 @@ func (s *Server) handle(conn net.Conn) {
 		log.Print(err)
 		return
 	}
+	//[]string{'{','}'}
 
+	handlerPath := ""
+	for j := range s.handlers {
+		log.Print("This is j ", j)
+		handlerPath = j
+	}
+	// newHandlerPath1 := ""
+	
+	// indexToFindFirst := strings.Index(handlerPath, "{")
+	// if indexToFindFirst != -1 {
+	// 	indexToFindSecond := strings.Index(handlerPath, "}")
+	// 	newHandlerPath1 = handlerPath[indexToFindFirst+1:indexToFindSecond] 
+	// }
+	// log.Print(newHandlerPath1)
+	
+	// newHandlerPath := strings.SplitAfter(handlerPath, "{")
+	// if len(newHandlerPath) > 1 {
+	// 	newHandlerPath[0] = strings.TrimRight(newHandlerPath[0], "{")
+	// 	for z :=1; z < len(newHandlerPath); z++{
+	// 		index := strings.Index(newHandlerPath[z], "}") 
+	// 		newHandlerPath[z] = newHandlerPath[z][:index]
+	// 	}
+		
+	// }
+	// for t:=0; t < 3; t++{
+	// 	strings.Index(handlerPath,"{")
+
+	// } 
+
+//	newHandlerPath := Split(handlerPath,"{","}")
+	//log.Print(newHandlerPath)	
+	// strings.Index(handlerPath,"{")
+	// strings.SplitAfter(handlerPath, "{")
+	// strings.
+	// handlerPath.Split("{","}")
 	log.Print(uri.Path)
 	log.Print(uri.Query())
 	urlPath := uri.Path
+	//categoryIdValue := ""
+	pathParameter := map[string]string{}
+	indexToFind := strings.Index(handlerPath, "{categoryId}")
+	if indexToFind != -1 {
+		newURLPath := urlPath[indexToFind+1:] 
+		index := strings.Index(newURLPath, "/")
+		categoryIDValue := newURLPath[:index]
+		pathParameter["categoryId"] = categoryIDValue
+	}
+	
+	
 	partsPath := strings.Split(urlPath, "/")
 	idPath := ""
 	newPath := ""
@@ -154,21 +200,22 @@ func (s *Server) handle(conn net.Conn) {
 	for i:=0; i < len(partsPath)-1; i++{
 		newPath += partsPath[i] + "/"
 	}	
-	newPath += "{id}"
-	newRequest := &Request{Conn: conn, PathParams: map[string]string{"id":idPath} }
+	pathParameter["id"] = idPath
+	//newPath += "{id}"
+	newRequest := &Request{Conn: conn, PathParams: pathParameter }
 	
 	//if path == "/" {
 		s.mu.RLock()
-		handler, ok := s.handlers[newPath]
+		handler := s.handlers[handlerPath]
 		//handler := s.handlers["/"]
 		s.mu.RUnlock()
-		if ok == true {
-			log.Print("Ok printed ", handler)
+		//if ok == true {
+		//	log.Print("Ok printed ", handler)
 			handler(newRequest)
-		} else {
+	//	} else {
 //			conn.Close()
-			return
-		}
+	//		return
+	//	}
 	//} 
 	// if path == "/about" {
 	// 	s.mu.RLock()
@@ -221,4 +268,14 @@ func (s *Server) handle(conn net.Conn) {
 	// }
 
 	
+}
+
+//Split for
+func Split(str, before, after string) string {
+    a := strings.SplitAfterN(str, before, 3)
+    b := strings.SplitAfterN(a[len(a)-1], after, 3)
+    if 1 == len(b) {
+        return b[0]
+    }
+    return b[0][0:len(b[0])-len(after)]
 }

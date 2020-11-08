@@ -28,7 +28,7 @@ type Server struct {
 //Request for
 type Request struct {
 	Conn net.Conn
-	QueryParams url.Values
+	PathParams map[string]string
 }
 
 //NewServer for
@@ -144,12 +144,18 @@ func (s *Server) handle(conn net.Conn) {
 
 	log.Print(uri.Path)
 	log.Print(uri.Query())
-	
-	newRequest := &Request{Conn: conn, QueryParams: uri.Query()}
+	urlPath := uri.Path
+	partsPath := strings.Split(urlPath, "/")
+	idPath := ""
+	if len(partsPath) == 3 {
+		idPath = partsPath[2]
+	}
+		
+	newRequest := &Request{Conn: conn, PathParams: map[string]string{"id":idPath} }
 	
 	//if path == "/" {
 		s.mu.RLock()
-		handler, ok := s.handlers[uri.Path]
+		handler, ok := s.handlers["/payments/{id}"]
 		//handler := s.handlers["/"]
 		s.mu.RUnlock()
 		if ok == true {

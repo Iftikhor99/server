@@ -29,8 +29,8 @@ func execute(host string, port string) (err error) {
 	
 	srv := server.NewServer(net.JoinHostPort(host, port))
 
-	srv.Register("/payments", func(req *server.Request) {
-		id := req.QueryParams["id"]
+	srv.Register("/payments/{id}", func(req *server.Request) {
+		id := req.PathParams["id"]
 		
 		log.Print("ID printed ", id)
 		

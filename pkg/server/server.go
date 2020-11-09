@@ -181,7 +181,7 @@ func (s *Server) handle(conn net.Conn) {
 	log.Print(uri.Query())
 	urlPath := uri.Path
 	//categoryIdValue := ""
-	var pathParameter map[string]string
+	pathParameter := map[string]string{}
 	indexToFind := strings.Index(handlerPath, "{categoryId}")
 	if indexToFind != -1 {
 		newURLPath := urlPath[indexToFind+1:] 
@@ -206,16 +206,16 @@ func (s *Server) handle(conn net.Conn) {
 	
 	//if path == "/" {
 		s.mu.RLock()
-		handler := s.handlers[handlerPath]
+		handler, ok := s.handlers[handlerPath]
 		//handler := s.handlers["/"]
 		s.mu.RUnlock()
-		//if ok == true {
+		if ok == true {
 		//	log.Print("Ok printed ", handler)
 			handler(newRequest)
-	//	} else {
+		} else {
 //			conn.Close()
-	//		return
-	//	}
+			return
+		}
 	//} 
 	// if path == "/about" {
 	// 	s.mu.RLock()

@@ -122,8 +122,17 @@ func (s *Server) handle(conn net.Conn) {
 	if requestLineEnd == -1 {
 
 	}
-	//requestLineDeLim2 := []byte{'\r', '\n','\r', '\n'}
-	dataAfterPath := string(data[requestLineEnd+2:])
+
+	dataAfterPathByte := data[requestLineEnd+2:]
+
+	requestLineDeLim2 := []byte{'\r', '\n','\r', '\n'}
+	endOfHeader := bytes.Index(dataAfterPathByte, requestLineDeLim2)
+	if endOfHeader != -1 {
+		dataAfterPathByte = dataAfterPathByte[:endOfHeader]	
+	}
+	
+	dataAfterPath := string(dataAfterPathByte)
+	
 	log.Print(dataAfterPath)
 	newDataAfterPath := strings.Split(dataAfterPath,"\r\n")
 	for _, one := range newDataAfterPath {

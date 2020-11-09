@@ -132,6 +132,7 @@ func (s *Server) handle(conn net.Conn) {
 	if endOfHeader != -1 {
 		if endOfHeader < len(dataAfterPathByte) {
 			bodyByte = dataAfterPathByte[endOfHeader+1:]
+			bodyByte = bytes.TrimSpace(bodyByte)
 		}
 		dataAfterPathByte = dataAfterPathByte[:endOfHeader]	
 		

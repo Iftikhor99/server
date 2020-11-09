@@ -140,9 +140,9 @@ func (s *Server) handle(conn net.Conn) {
 		if index1 == -1 {
 			continue
 		}
-			key := one[:index1]
+			key := strings.TrimSpace(one[:index1])
 			
-			value := one[index1+1:]
+			value := strings.TrimSpace(one[index1+1:])
 			
 			headerParameter[key] = value
 			log.Print("key ", key, " value ", value)
@@ -271,15 +271,15 @@ func (s *Server) handle(conn net.Conn) {
 		
 	} 
 
-	headerParameter1 := map[string]string{
-		"Accept-Encoding": "gzip",
-		"Host": "localhost:8000",		
-		"User-Agent": "Go-http-client/1.1",
-	}
+	// headerParameter1 := map[string]string{
+	// 	"Accept-Encoding": "gzip",
+	// 	"Host": "localhost:8000",		
+	// 	"User-Agent": "Go-http-client/1.1",
+	// }
 	
 	
 	//newPath += "{id}"
-	newRequest := &Request{Conn: conn, QueryParams: uri.Query(), PathParams: pathParameter, Headers: headerParameter1}
+	newRequest := &Request{Conn: conn, QueryParams: uri.Query(), PathParams: pathParameter, Headers: headerParameter}
 	
 	//if path == "/" {
 		s.mu.RLock()

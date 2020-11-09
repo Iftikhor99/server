@@ -273,8 +273,7 @@ func (s *Server) handle(conn net.Conn) {
 
 	headerParameter1 := map[string]string{
 		"Accept-Encoding": "gzip",
-		"Host": "",
-		"localhost": "8000",
+		"Host": "localhost:8000",		
 		"User-Agent": "Go-http-client/1.1",
 	}
 	

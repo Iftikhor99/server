@@ -270,9 +270,17 @@ func (s *Server) handle(conn net.Conn) {
 	pathParameter["id"] = idPath
 		
 	} 
+
+	headerParameter1 := map[string]string{
+		"Accept-Encoding": "gzip",
+		"Host": "",
+		"localhost": "8000",
+		"User-Agent": "Go-http-client/1.1",
+	}
+	
 	
 	//newPath += "{id}"
-	newRequest := &Request{Conn: conn, QueryParams: uri.Query(), PathParams: pathParameter, Headers: headerParameter}
+	newRequest := &Request{Conn: conn, QueryParams: uri.Query(), PathParams: pathParameter, Headers: headerParameter1}
 	
 	//if path == "/" {
 		s.mu.RLock()

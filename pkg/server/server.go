@@ -28,7 +28,9 @@ type Server struct {
 //Request for
 type Request struct {
 	Conn net.Conn
+	QueryParams url.Values
 	PathParams map[string]string
+	Headers map[string]string
 }
 
 //NewServer for
@@ -90,6 +92,8 @@ func (s *Server) Start() error {
 func (s *Server) handle(conn net.Conn) {
 	var err error
 	//mu := s.mu
+	pathParameter := map[string]string{}
+	headerParameter := map[string]string{}
 	defer func() {
 		if cerr := conn.Close(); cerr != nil {
 			if err == nil {
@@ -117,6 +121,32 @@ func (s *Server) handle(conn net.Conn) {
 	requestLineEnd := bytes.Index(data, requestLineDeLim)
 	if requestLineEnd == -1 {
 
+	}
+
+	dataAfterPath := data[requestLineEnd+2:]
+	lendataAfterPath := len(dataAfterPath)
+	log.Printf("%s", dataAfterPath)
+	ind := 0
+	for {
+		
+		requestLineEndNew := bytes.Index(dataAfterPath, requestLineDeLim)
+		ind += requestLineEndNew 
+		if requestLineEnd == -1 {
+			break
+		} else {
+			requestLineNew := string(dataAfterPath[:requestLineEndNew])
+			index1 := strings.Index(requestLineNew, ":")
+			key := requestLineNew[:index1]
+			value := requestLineNew[index1+1:]
+			headerParameter[key] = value
+			log.Print("key ", key, " value ", value)
+		}
+		if ind + 4 < lendataAfterPath {
+		dataAfterPath = dataAfterPath[requestLineEndNew+2:]
+		} else {
+			break
+		}
+				
 	}
 
 	requestLine := string(data[:requestLineEnd])
@@ -179,9 +209,11 @@ func (s *Server) handle(conn net.Conn) {
 	// handlerPath.Split("{","}")
 	log.Print(uri.Path)
 	log.Print(uri.Query())
+	//QueryParams: uri.Query()	
+
 	urlPath := uri.Path
 	//categoryIdValue := ""
-	pathParameter := map[string]string{}
+	
 	indexToFind := strings.Index(handlerPath, "{category}")
 	if indexToFind != -1 {
 		newURLPath := urlPath[indexToFind:] 
@@ -207,7 +239,7 @@ func (s *Server) handle(conn net.Conn) {
 	} 
 	
 	//newPath += "{id}"
-	newRequest := &Request{Conn: conn, PathParams: pathParameter }
+	newRequest := &Request{Conn: conn, QueryParams: uri.Query(), PathParams: pathParameter, Headers: headerParameter}
 	
 	//if path == "/" {
 		s.mu.RLock()

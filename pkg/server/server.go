@@ -122,12 +122,18 @@ func (s *Server) handle(conn net.Conn) {
 	if requestLineEnd == -1 {
 
 	}
-
+	//requestLineDeLim2 := []byte{'\r', '\n','\r', '\n'}
 	dataAfterPath := data[requestLineEnd+2:]
+	// endOfHeader := bytes.Index(dataAfterPath, requestLineDeLim2)
+	// if endOfHeader != -1 {
+	// 	dataAfterPath = dataAfterPath[:endOfHeader]	
+	// }
+	
 	lendataAfterPath := len(dataAfterPath)
 	log.Printf("%s", dataAfterPath)
 	ind := 0
 	for {
+		
 		if len(dataAfterPath) < 4 {
 			break
 		}
@@ -138,12 +144,14 @@ func (s *Server) handle(conn net.Conn) {
 		} else {
 			requestLineNew := string(dataAfterPath[:requestLineEndNew])
 			index1 := strings.Index(requestLineNew, ":")
-			key := requestLineNew[:index1]
-			value := requestLineNew[index1+1:]
+			key := strings.Trim(requestLineNew[:index1],"\r\n")
+			key = strings.Trim(key,"\r\n")
+			value := strings.Trim(requestLineNew[index1+1:],"\r\n")
+			value = strings.Trim(value,"\r\n")
 			headerParameter[key] = value
 			log.Print("key ", key, " value ", value)
 		}
-		if ind + 4 < lendataAfterPath {
+		if ind + 2 < lendataAfterPath {
 		dataAfterPath = dataAfterPath[requestLineEndNew+2:]
 		} else {
 			break

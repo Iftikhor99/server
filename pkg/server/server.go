@@ -190,8 +190,10 @@ func (s *Server) handle(conn net.Conn) {
 		pathParameter["category"] = categoryIDValue
 	}
 	
-	
-	partsPath := strings.Split(urlPath, "/")
+	indexToCheck := strings.Index(handlerPath, "{id}")
+	if indexToCheck != -1 {
+
+		partsPath := strings.Split(urlPath, "/")
 	idPath := ""
 	newPath := ""
 //	if len(partsPath) == 3 {
@@ -201,6 +203,9 @@ func (s *Server) handle(conn net.Conn) {
 		newPath += partsPath[i] + "/"
 	}	
 	pathParameter["id"] = idPath
+		
+	} 
+	
 	//newPath += "{id}"
 	newRequest := &Request{Conn: conn, PathParams: pathParameter }
 	

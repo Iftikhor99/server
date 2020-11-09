@@ -5,7 +5,7 @@ import (
 //	"fmt"
 //	"io"
 //	"io/ioutil"
-	"log"
+//	"log"
 	"net"
 	"os"
 //	"strconv"
@@ -29,10 +29,10 @@ func execute(host string, port string) (err error) {
 	
 	srv := server.NewServer(net.JoinHostPort(host, port))
 
-	srv.Register("/api/catgory{category}/{id}", func(req *server.Request) {
-		id := req.PathParams["id"]
-		ctID := req.PathParams["category"]
-		log.Print("ID printed ", id, ctID)
+	srv.Register("api/payments", func(req *server.Request) {
+		// id := req.PathParams["id"]
+		// ctID := req.PathParams["category"]
+		// log.Print("ID printed ", id, ctID)
 		
 	})
 	

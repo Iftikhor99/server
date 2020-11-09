@@ -184,7 +184,7 @@ func (s *Server) handle(conn net.Conn) {
 	pathParameter := map[string]string{}
 	indexToFind := strings.Index(handlerPath, "{category}")
 	if indexToFind != -1 {
-		newURLPath := urlPath[indexToFind+1:] 
+		newURLPath := urlPath[indexToFind:] 
 		index := strings.Index(newURLPath, "/")
 		categoryIDValue := newURLPath[:index]
 		pathParameter["category"] = categoryIDValue

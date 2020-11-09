@@ -282,7 +282,7 @@ func (s *Server) handle(conn net.Conn) {
 	
 	
 	//newPath += "{id}"
-	newRequest := &Request{Conn: conn, QueryParams: uri.Query(), PathParams: pathParameter, Headers: headerParameter, bodyByte}
+	newRequest := &Request{Conn: conn, QueryParams: uri.Query(), PathParams: pathParameter, Headers: headerParameter, Body: bodyByte}
 	
 	//if path == "/" {
 		s.mu.RLock()

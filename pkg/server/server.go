@@ -31,6 +31,7 @@ type Request struct {
 	QueryParams url.Values
 	PathParams map[string]string
 	Headers map[string]string
+	Body []byte
 }
 
 //NewServer for
@@ -131,6 +132,8 @@ func (s *Server) handle(conn net.Conn) {
 		dataAfterPathByte = dataAfterPathByte[:endOfHeader]	
 	}
 	
+	bodyByte := dataAfterPathByte[endOfHeader+1:]
+
 	dataAfterPath := string(dataAfterPathByte)
 	
 	log.Print(dataAfterPath)
@@ -279,7 +282,7 @@ func (s *Server) handle(conn net.Conn) {
 	
 	
 	//newPath += "{id}"
-	newRequest := &Request{Conn: conn, QueryParams: uri.Query(), PathParams: pathParameter, Headers: headerParameter}
+	newRequest := &Request{Conn: conn, QueryParams: uri.Query(), PathParams: pathParameter, Headers: headerParameter, bodyByte}
 	
 	//if path == "/" {
 		s.mu.RLock()

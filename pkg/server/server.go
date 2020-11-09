@@ -131,7 +131,9 @@ func (s *Server) handle(conn net.Conn) {
 	endOfHeader := bytes.Index(dataAfterPathByte, requestLineDeLim2)
 	if endOfHeader != -1 {
 		dataAfterPathByte = dataAfterPathByte[:endOfHeader]	
-		bodyByte = dataAfterPathByte[endOfHeader+1:]
+		if endOfHeader < len(dataAfterPathByte) {
+			bodyByte = dataAfterPathByte[endOfHeader+1:]
+		}
 	}
 	
 	//bodyByte := dataAfterPathByte[endOfHeader+1:]

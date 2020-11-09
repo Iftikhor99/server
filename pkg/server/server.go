@@ -181,7 +181,7 @@ func (s *Server) handle(conn net.Conn) {
 	log.Print(uri.Query())
 	urlPath := uri.Path
 	//categoryIdValue := ""
-	pathParameter := map[string]string{}
+	var pathParameter map[string]string
 	indexToFind := strings.Index(handlerPath, "{categoryId}")
 	if indexToFind != -1 {
 		newURLPath := urlPath[indexToFind+1:] 

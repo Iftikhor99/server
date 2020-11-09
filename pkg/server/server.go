@@ -128,7 +128,9 @@ func (s *Server) handle(conn net.Conn) {
 	log.Printf("%s", dataAfterPath)
 	ind := 0
 	for {
-		
+		if len(dataAfterPath) < 4 {
+			break
+		}
 		requestLineEndNew := bytes.Index(dataAfterPath, requestLineDeLim)
 		ind += requestLineEndNew 
 		if requestLineEnd == -1 {

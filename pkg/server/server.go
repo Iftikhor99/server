@@ -182,12 +182,12 @@ func (s *Server) handle(conn net.Conn) {
 	urlPath := uri.Path
 	//categoryIdValue := ""
 	pathParameter := map[string]string{}
-	indexToFind := strings.Index(handlerPath, "{categoryId}")
+	indexToFind := strings.Index(handlerPath, "{category}")
 	if indexToFind != -1 {
 		newURLPath := urlPath[indexToFind+1:] 
 		index := strings.Index(newURLPath, "/")
 		categoryIDValue := newURLPath[:index]
-		pathParameter["categoryId"] = categoryIDValue
+		pathParameter["category"] = categoryIDValue
 	}
 	
 	

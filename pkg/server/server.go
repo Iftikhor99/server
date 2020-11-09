@@ -123,41 +123,55 @@ func (s *Server) handle(conn net.Conn) {
 
 	}
 	//requestLineDeLim2 := []byte{'\r', '\n','\r', '\n'}
-	dataAfterPath := data[requestLineEnd+2:]
+	dataAfterPath := string(data[requestLineEnd+2:])
+	log.Print(dataAfterPath)
+	newDataAfterPath := strings.Split(dataAfterPath,"\r\n")
+	for _, one := range newDataAfterPath {
+		index1 := strings.Index(one, ":")
+		if index1 == -1 {
+			continue
+		}
+			key := one[:index1]
+			
+			value := one[index1+1:]
+			
+			headerParameter[key] = value
+			log.Print("key ", key, " value ", value)
+	}
 	// endOfHeader := bytes.Index(dataAfterPath, requestLineDeLim2)
 	// if endOfHeader != -1 {
 	// 	dataAfterPath = dataAfterPath[:endOfHeader]	
 	// }
 	
-	lendataAfterPath := len(dataAfterPath)
-	log.Printf("%s", dataAfterPath)
-	ind := 0
-	for {
+	// lendataAfterPath := len(dataAfterPath)
+	// log.Printf("%s", dataAfterPath)
+	// ind := 0
+	// for {
 		
-		if len(dataAfterPath) < 4 {
-			break
-		}
-		requestLineEndNew := bytes.Index(dataAfterPath, requestLineDeLim)
-		ind += requestLineEndNew 
-		if requestLineEnd == -1 {
-			break
-		} else {
-			requestLineNew := string(dataAfterPath[:requestLineEndNew])
-			index1 := strings.Index(requestLineNew, ":")
-			key := strings.Trim(requestLineNew[:index1],"\r\n")
-			key = strings.Trim(key,"\r\n")
-			value := strings.Trim(requestLineNew[index1+1:],"\r\n")
-			value = strings.Trim(value,"\r\n")
-			headerParameter[key] = value
-			log.Print("key ", key, " value ", value)
-		}
-		if ind + 2 < lendataAfterPath {
-		dataAfterPath = dataAfterPath[requestLineEndNew+2:]
-		} else {
-			break
-		}
+	// 	if len(dataAfterPath) < 4 {
+	// 		break
+	// 	}
+	// 	requestLineEndNew := bytes.Index(dataAfterPath, requestLineDeLim)
+	// 	ind += requestLineEndNew 
+	// 	if requestLineEnd == -1 {
+	// 		break
+	// 	} else {
+	// 		requestLineNew := string(dataAfterPath[:requestLineEndNew])
+	// 		index1 := strings.Index(requestLineNew, ":")
+	// 		key := strings.Trim(requestLineNew[:index1],"\r\n")
+	// 		key = strings.Trim(key,"\r\n")
+	// 		value := strings.Trim(requestLineNew[index1+1:],"\r\n")
+	// 		value = strings.Trim(value,"\r\n")
+	// 		headerParameter[key] = value
+	// 		log.Print("key ", key, " value ", value)
+	// 	}
+	// 	if ind + 2 < lendataAfterPath {
+	// 	dataAfterPath = dataAfterPath[requestLineEndNew+2:]
+	// 	} else {
+	// 		break
+	// 	}
 				
-	}
+	// }
 
 	requestLine := string(data[:requestLineEnd])
 	parts := strings.Split(requestLine, " ")

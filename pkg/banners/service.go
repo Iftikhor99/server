@@ -55,7 +55,9 @@ func (s *Service) All(ctx context.Context) ([]*Banner, error) {
 	// 	}
 	// }
 	banners := s.items
-
+	if len(banners) == 0 {
+		return nil, errors.New("item not found")
+	}
 	return banners, nil
 	//panic("not implemented")
 }
@@ -70,7 +72,7 @@ func (s *Service) RemoveByID(ctx context.Context, id int64) (*Banner, error) {
 	panic("not implemented")
 }
 
-// Init for
+// Initial for
 func (s *Service) Initial() {
 	banner := Banner{
 		ID: 1,

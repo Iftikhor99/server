@@ -71,7 +71,7 @@ func (s *Service) RemoveByID(ctx context.Context, id int64) (*Banner, error) {
 }
 
 // Init for
-func (s *Service) Init() {
+func (s *Service) Initial() {
 	banner := Banner{
 		ID: 1,
 
@@ -84,8 +84,21 @@ func (s *Service) Init() {
 		Link: "string Link",
 	}
 
+	banner2 := Banner{
+		ID: 2,
+
+		Title: "Title New",
+
+		Content: "Content New",
+
+		Button: "Button New",
+
+		Link: "Link New",
+	}
+
 	//item := s.items
 	s.items = append(s.items, &banner)
+	s.items = append(s.items, &banner2)
 	//item[1] = &banner
 	//	panic("not implemented")
 }

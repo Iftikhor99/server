@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/Iftikhor99/cmd/app"
-	"github.com/Iftikhor99/pkg/banners"
+	"github.com/Iftikhor99/server/cmd/app"
+	"github.com/Iftikhor99/server/pkg/banners"
 )
 
 func main() {

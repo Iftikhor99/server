@@ -47,7 +47,17 @@ func (s *Service) ByID(ctx context.Context, id int64) (*Banner, error) {
 
 // All for
 func (s *Service) All(ctx context.Context) ([]*Banner, error) {
-	panic("not implemented")
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	// for _, banner := range s.items {
+	// 	if banner.ID == id {
+	// 		return banner, nil
+	// 	}
+	// }
+	banners := s.items
+
+	return banners, nil
+	//panic("not implemented")
 }
 
 // Save for
@@ -58,4 +68,24 @@ func (s *Service) Save(ctx context.Context, item *Banner) (*Banner, error) {
 // RemoveByID for
 func (s *Service) RemoveByID(ctx context.Context, id int64) (*Banner, error) {
 	panic("not implemented")
+}
+
+// Init for
+func (s *Service) Init() {
+	banner := Banner{
+		ID: 1,
+
+		Title: "string Title",
+
+		Content: "string Content",
+
+		Button: "string Button",
+
+		Link: "string Link",
+	}
+
+	//item := s.items
+	s.items = append(s.items, &banner)
+	//item[1] = &banner
+	//	panic("not implemented")
 }

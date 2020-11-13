@@ -33,11 +33,11 @@ func (s *Server) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 // Init wHmunannsupyet cepsep (permctpupyet sce Handler's)
 func (s *Server) Init() {
 	s.mux.HandleFunc("/banners.getAll", s.handleGetAllBanners)
-	s.mux.HandleFunc("/banners.getById", s.handleGetBannerByID)
+	//	s.mux.HandleFunc("/banners.getById", s.handleGetBannerByID)
 	s.mux.HandleFunc("/banners.save", s.handleSaveBanner)
 
 	s.mux.HandleFunc("/banners.removeById", s.handleRemoveByID)
-	s.mux.HandleFunc("/banners.getById/", s.handleGetPostByID)
+	s.mux.HandleFunc("/banners.getById", s.handleGetPostByID)
 
 }
 
@@ -92,4 +92,13 @@ func (s *Server) handleGetBannerByID(writer http.ResponseWriter, request *http.R
 
 func (s *Server) handleGetAllBanners(writer http.ResponseWriter, request *http.Request) {
 	log.Print(request)
+
+	item, err := s.bannersSvc.All(request.Context())
+
+	if err != nil {
+		log.Print(err)
+		http.Error(writer, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+	log.Print(item)
 }

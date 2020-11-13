@@ -79,17 +79,17 @@ func (s *Server) handleGetPostByID(writer http.ResponseWriter, request *http.Req
 }
 
 func (s *Server) handleRemoveByID(writer http.ResponseWriter, request *http.Request) {
-
+	log.Print(request)
 }
 
 func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Request) {
-
+	log.Print(request)
 }
 
 func (s *Server) handleGetBannerByID(writer http.ResponseWriter, request *http.Request) {
-
+	log.Print(request)
 }
 
 func (s *Server) handleGetAllBanners(writer http.ResponseWriter, request *http.Request) {
-
+	log.Print(request)
 }

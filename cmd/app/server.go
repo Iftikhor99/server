@@ -6,7 +6,9 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
+	"strings"
 
 	"github.com/Iftikhor99/server/pkg/banners"
 )
@@ -152,8 +154,11 @@ func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Requ
 	log.Print(request.Form)
 	log.Print(request.PostForm)
 	log.Print(request.FormFile("image"))
-	fileA, _, _ := request.FormFile("image")
-
+	fileA, fileHeader, _ := request.FormFile("image")
+	fileName := fileHeader.Filename
+	log.Print(fileName)
+	extenIndex := strings.Index(fileName, ".")
+	fileExtension := fileName[extenIndex:]
 	//fileA.Read()
 	content := make([]byte, 0)
 	buf := make([]byte, 4)
@@ -165,13 +170,22 @@ func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Requ
 		content = append(content, buf[:read]...)
 	}
 	//os.Create()
-	err = ioutil.WriteFile("c:/projects/http/web/banners/1.png", content, 0600)
+	wd, err := os.Getwd()
+	if err != nil {
+		log.Print(err)
+		return
+	}
+
+	idParam := request.FormValue("id")
+
+	wd = "/" + idParam + fileExtension
+	log.Print(wd)
+	err = ioutil.WriteFile(wd, content, 0600)
 	if err != nil {
 		log.Print(err)
 
 	}
 
-	idParam := request.FormValue("id")
 	id, err := strconv.ParseInt(idParam, 10, 64)
 	if err != nil {
 		log.Print(err)

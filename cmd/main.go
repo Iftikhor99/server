@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"net"
 	"net/http"
 	"os"
@@ -13,14 +12,6 @@ import (
 func main() {
 	host := "0.0.0.0"
 	port := "9999"
-
-	wd, err := os.Getwd()
-	if err != nil {
-		log.Print(err)
-		return
-	}
-
-	log.Print(wd)
 
 	if err := execute(host, port); err != nil {
 		os.Exit(1)

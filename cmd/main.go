@@ -23,7 +23,7 @@ func execute(host string, port string) (err error) {
 	bannersSvc := banners.NewService()
 	server := app.NewServer(mux, bannersSvc)
 	server.Init()
-	bannersSvc.Initial()
+	//	bannersSvc.Initial()
 	srv := &http.Server{
 		Addr:    net.JoinHostPort(host, port),
 		Handler: server,

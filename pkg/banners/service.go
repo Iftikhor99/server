@@ -70,12 +70,19 @@ func (s *Service) All(ctx context.Context) ([]*Banner, error) {
 
 // Save for
 func (s *Service) Save(ctx context.Context, item *Banner) (*Banner, error) {
+	var lastID int64
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	//	for _, banner := range s.items {
 	if item.ID == 0 {
-
-		item.ID = int64(len(s.items)) + 1
+		lenBanners := len(s.items) - 1
+		for i, banner := range s.items {
+			if i == lenBanners {
+				lastID = banner.ID
+			}
+		}
+		item.ID = lastID + 1
+		//		item.ID = int64(len(s.items)) + 1
 		nameImage := item.Image
 		extenIndex := strings.Index(nameImage, ".")
 		fileExtension := nameImage[extenIndex:]

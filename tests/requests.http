@@ -12,4 +12,4 @@ GET http://localhost:9999/banners.save?id=0&title=Депозиты с доход
 
 ###
 
-GET http://localhost:9999/banners.removeById?id=1 HTTP/1.1
+GET http://localhost:9999/banners.removeById?id=2 HTTP/1.1

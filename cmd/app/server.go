@@ -185,8 +185,8 @@ func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Requ
 	// wd = wd + "/" + idParam + fileExtension
 
 	// fileNameNew := item.Image
-	wdd := "web/banners" + "/" + strconv.FormatInt(fileN, 10) + fileExtension
-	//wdd := "c:/projects/http/web/banners" + "/" + fileN + fileExtension
+	//wdd := "web/banners" + "/" + strconv.FormatInt(fileN, 10) + fileExtension
+	wdd := "c:/projects/http/web/banners" + "/" + strconv.FormatInt(fileN, 10) + fileExtension
 	log.Print(wdd)
 	err = ioutil.WriteFile(wdd, content, 0600)
 	if err != nil {
@@ -247,8 +247,8 @@ func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Requ
 	}
 
 	fileNameNew := item.Image
-	wdd1 := "web/banners" + "/" + fileNameNew
-	//wdd := "c:/projects/http/web/banners" + "/" + fileNameNew
+	//wdd1 := "web/banners" + "/" + fileNameNew
+	wdd1 := "c:/projects/http/web/banners" + "/" + fileNameNew
 	log.Print(wdd)
 	err = ioutil.WriteFile(wdd1, content, 0600)
 	if err != nil {

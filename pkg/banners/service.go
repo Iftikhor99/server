@@ -33,6 +33,8 @@ type Banner struct {
 	Button string
 
 	Link string
+
+	Image string
 }
 
 // ByID Bo3BpawaeT OaHHep no upeHTHOuKaTopy.
@@ -132,6 +134,8 @@ func (s *Service) Initial(request *http.Request) Banner {
 		Button: buttonParam,
 
 		Link: linkParam,
+
+		Image: "image1",
 	}
 
 	// banner2 := Banner{

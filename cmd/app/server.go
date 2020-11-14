@@ -2,6 +2,8 @@ package app
 
 import (
 	"encoding/json"
+	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
@@ -119,11 +121,83 @@ func (s *Server) handleRemoveByID(writer http.ResponseWriter, request *http.Requ
 }
 
 func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Request) {
-	log.Print(request)
-	log.Print(request.Header)
-	log.Print(request.Body)
+	//log.Print(request)
+	//log.Print(request.Header)
+	//log.Print(request.Body)
 
-	banner := s.bannersSvc.Initial(request)
+	log.Print(request.RequestURI)
+	log.Print(request.Method)
+	log.Print(request.Header)
+	log.Print(request.Header.Get("Content-Type"))
+
+	log.Print(request.FormValue("id"))
+	log.Print(request.FormValue("title"))
+	log.Print(request.FormValue("content"))
+	log.Print(request.FormValue("button"))
+	log.Print(request.FormValue("link"))
+
+	//log.Print(request.PostFormValue("tags"))
+
+	body, err := ioutil.ReadAll(request.Body)
+	if err != nil {
+		log.Print(err)
+	}
+	log.Printf("%s", body)
+
+	err = request.ParseMultipartForm(10 * 1024 * 1024)
+	if err != nil {
+		log.Print(err)
+	}
+
+	log.Print(request.Form)
+	log.Print(request.PostForm)
+	log.Print(request.FormFile("image"))
+	fileA, _, _ := request.FormFile("image")
+
+	//fileA.Read()
+	content := make([]byte, 0)
+	buf := make([]byte, 4)
+	for {
+		read, err := fileA.Read(buf)
+		if err == io.EOF {
+			break
+		}
+		content = append(content, buf[:read]...)
+	}
+	//os.Create()
+	err = ioutil.WriteFile("c:/projects/http/web/banners/1.png", content, 0600)
+	if err != nil {
+		log.Print(err)
+
+	}
+
+	idParam := request.FormValue("id")
+	id, err := strconv.ParseInt(idParam, 10, 64)
+	if err != nil {
+		log.Print(err)
+
+	}
+
+	titleParam := request.FormValue("title")
+	contentParam := request.FormValue("content")
+	buttonParam := request.FormValue("button")
+	linkParam := request.FormValue("link")
+
+	banner := banners.Banner{
+		ID: id,
+
+		Title: titleParam,
+
+		Content: contentParam,
+
+		Button: buttonParam,
+
+		Link: linkParam,
+
+		Image: idParam + ".png",
+	}
+
+	//banner := s.bannersSvc.Initial(request)
 
 	//idParam := request.URL.Query().Get("id")
 

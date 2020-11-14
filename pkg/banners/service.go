@@ -93,7 +93,22 @@ func (s *Service) Save(ctx context.Context, item *Banner) (*Banner, error) {
 
 // RemoveByID for
 func (s *Service) RemoveByID(ctx context.Context, id int64) (*Banner, error) {
-	panic("not implemented")
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	for _, banner := range s.items {
+		if banner.ID == id {
+			retunBanner := banner
+			banner.ID = 0
+			banner.Button = ""
+			banner.Content = ""
+			banner.Link = ""
+			banner.Title = ""
+
+			return retunBanner, nil
+		}
+	}
+
+	return nil, errors.New("item not found")
 }
 
 // Initial for

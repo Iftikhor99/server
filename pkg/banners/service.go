@@ -90,7 +90,7 @@ func (s *Service) Save(ctx context.Context, item *Banner) (*Banner, error) {
 				banner.Content = item.Content
 				banner.Link = item.Link
 				banner.Title = item.Title
-				banner.Image = item.Image
+				//banner.Image = item.Image
 				return item, nil
 			}
 		}

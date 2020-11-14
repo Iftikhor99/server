@@ -170,7 +170,9 @@ func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Requ
 		content = append(content, buf[:read]...)
 	}
 	//os.Create()
-	wd, err := os.Getwd()
+	//wd, err := os.Getwd()
+
+	wd, err := os.Executable()
 	if err != nil {
 		log.Print(err)
 		return
@@ -178,7 +180,7 @@ func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Requ
 
 	idParam := request.FormValue("id")
 
-	wd = "/" + idParam + fileExtension
+	wd = wd + "/" + idParam + fileExtension
 	log.Print(wd)
 	err = ioutil.WriteFile(wd, content, 0600)
 	if err != nil {
@@ -208,7 +210,7 @@ func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Requ
 
 		Link: linkParam,
 
-		Image: idParam + ".png",
+		Image: idParam + fileExtension,
 	}
 
 	//banner := s.bannersSvc.Initial(request)

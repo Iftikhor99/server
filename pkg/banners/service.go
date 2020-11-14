@@ -3,6 +3,9 @@ package banners
 import (
 	"context"
 	"errors"
+	"log"
+	"net/http"
+	"strconv"
 	"sync"
 )
 
@@ -64,7 +67,23 @@ func (s *Service) All(ctx context.Context) ([]*Banner, error) {
 
 // Save for
 func (s *Service) Save(ctx context.Context, item *Banner) (*Banner, error) {
-	panic("not implemented")
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	//	for _, banner := range s.items {
+	if item.ID == 0 {
+		item.ID++
+		s.items = append(s.items, item)
+		return item, nil
+	}
+	if item.ID != 0 {
+		item.ID++
+		s.items = append(s.items, item)
+		return item, nil
+	}
+	//	}
+
+	return nil, errors.New("item not found")
+
 }
 
 // RemoveByID for
@@ -73,34 +92,49 @@ func (s *Service) RemoveByID(ctx context.Context, id int64) (*Banner, error) {
 }
 
 // Initial for
-func (s *Service) Initial() {
+func (s *Service) Initial(request *http.Request) Banner {
+
+	idParam := request.URL.Query().Get("id")
+	id, err := strconv.ParseInt(idParam, 10, 64)
+	if err != nil {
+		log.Print(err)
+
+	}
+
+	titleParam := request.URL.Query().Get("title")
+	contentParam := request.URL.Query().Get("content")
+	buttonParam := request.URL.Query().Get("button")
+	linkParam := request.URL.Query().Get("link")
+
 	banner := Banner{
-		ID: 1,
+		ID: id,
 
-		Title: "string Title",
+		Title: titleParam,
 
-		Content: "string Content",
+		Content: contentParam,
 
-		Button: "string Button",
+		Button: buttonParam,
 
-		Link: "string Link",
+		Link: linkParam,
 	}
 
-	banner2 := Banner{
-		ID: 2,
+	// banner2 := Banner{
+	// 	ID: 2,
 
-		Title: "Title New",
+	// 	Title: "Title New",
 
-		Content: "Content New",
+	// 	Content: "Content New",
 
-		Button: "Button New",
+	// 	Button: "Button New",
 
-		Link: "Link New",
-	}
+	// 	Link: "Link New",
+	// }
 
 	//item := s.items
-	s.items = append(s.items, &banner)
-	s.items = append(s.items, &banner2)
+	//	s.items = append(s.items, &banner)
+	//s.items = append(s.items, &banner2)
 	//item[1] = &banner
 	//	panic("not implemented")
+
+	return banner
 }

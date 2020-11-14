@@ -84,6 +84,44 @@ func (s *Server) handleRemoveByID(writer http.ResponseWriter, request *http.Requ
 
 func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Request) {
 	log.Print(request)
+	log.Print(request.Header)
+	log.Print(request.Body)
+
+	banner := s.bannersSvc.Initial(request)
+
+	//idParam := request.URL.Query().Get("id")
+
+	//id, err := strconv.ParseInt(idParam, 10, 64)
+
+	// if err != nil {
+	// 	log.Print(err)
+	// 	http.Error(writer, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+	// 	return
+	// }
+
+	item, err := s.bannersSvc.Save(request.Context(), &banner)
+
+	if err != nil {
+		log.Print(err)
+		http.Error(writer, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	data, err := json.Marshal(item)
+
+	if err != nil {
+		log.Print(err)
+		http.Error(writer, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	writer.Header().Set("Content-Type", "application/json")
+	_, err = writer.Write(data)
+
+	if err != nil {
+		log.Print(err)
+	}
+
 }
 
 func (s *Server) handleGetBannerByID(writer http.ResponseWriter, request *http.Request) {

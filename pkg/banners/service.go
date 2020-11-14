@@ -71,17 +71,22 @@ func (s *Service) Save(ctx context.Context, item *Banner) (*Banner, error) {
 	defer s.mu.RUnlock()
 	//	for _, banner := range s.items {
 	if item.ID == 0 {
-		item.ID++
+
+		item.ID = int64(len(s.items)) + 1
 		s.items = append(s.items, item)
 		return item, nil
 	}
 	if item.ID != 0 {
-		item.ID++
-		s.items = append(s.items, item)
-		return item, nil
+		for _, banner := range s.items {
+			if banner.ID == item.ID {
+				banner.Button = item.Button
+				banner.Content = item.Content
+				banner.Link = item.Link
+				banner.Title = item.Title
+				return item, nil
+			}
+		}
 	}
-	//	}
-
 	return nil, errors.New("item not found")
 
 }

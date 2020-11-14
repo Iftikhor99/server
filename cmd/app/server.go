@@ -122,6 +122,8 @@ func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Requ
 		log.Print(err)
 	}
 
+	log.Print(item)
+
 }
 
 func (s *Server) handleGetBannerByID(writer http.ResponseWriter, request *http.Request) {

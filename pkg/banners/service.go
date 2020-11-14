@@ -79,7 +79,7 @@ func (s *Service) Save(ctx context.Context, item *Banner) (*Banner, error) {
 		nameImage := item.Image
 		extenIndex := strings.Index(nameImage, ".")
 		fileExtension := nameImage[extenIndex:]
-		item.Image = string(rune(item.ID)) + fileExtension
+		item.Image = strconv.FormatInt(item.ID, 10) + fileExtension
 		s.items = append(s.items, item)
 		return item, nil
 	}

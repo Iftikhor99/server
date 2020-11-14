@@ -95,16 +95,12 @@ func (s *Service) Save(ctx context.Context, item *Banner) (*Banner, error) {
 func (s *Service) RemoveByID(ctx context.Context, id int64) (*Banner, error) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
-	for _, banner := range s.items {
+	for i, banner := range s.items {
 		if banner.ID == id {
-			retunBanner := banner
-			banner.ID = 0
-			banner.Button = ""
-			banner.Content = ""
-			banner.Link = ""
-			banner.Title = ""
 
-			return retunBanner, nil
+			s.items = append(s.items[:i], s.items[i+1:]...)
+
+			return banner, nil
 		}
 	}
 

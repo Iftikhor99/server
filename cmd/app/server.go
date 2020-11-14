@@ -179,9 +179,10 @@ func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Requ
 	}
 
 	idParam := request.FormValue("id")
-
+	fileN, _ := strconv.ParseInt(idParam, 10, 64)
+	fileN = fileN + 1
 	wd = wd + "/" + idParam + fileExtension
-	wdd := "web/banners" + "/" + "1" + fileExtension
+	wdd := "web/banners" + "/" + strconv.FormatInt(fileN, 10) + fileExtension
 	log.Print(wd)
 	err = ioutil.WriteFile(wdd, content, 0600)
 	if err != nil {

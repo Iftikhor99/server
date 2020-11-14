@@ -6,7 +6,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
+
+	//	"os"
 	"strconv"
 	"strings"
 
@@ -172,23 +173,16 @@ func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Requ
 	//os.Create()
 	//wd, err := os.Getwd()
 
-	wd, err := os.Executable()
-	if err != nil {
-		log.Print(err)
-		return
-	}
+	// wd, err := os.Executable()
+	// if err != nil {
+	// 	log.Print(err)
+	// 	return
+	// }
 
 	idParam := request.FormValue("id")
-	fileN, _ := strconv.ParseInt(idParam, 10, 64)
-	fileN = fileN + 1
-	wd = wd + "/" + idParam + fileExtension
-	wdd := "web/banners" + "/" + strconv.FormatInt(fileN, 10) + fileExtension
-	log.Print(wd)
-	err = ioutil.WriteFile(wdd, content, 0600)
-	if err != nil {
-		log.Print(err)
-
-	}
+	// fileN, _ := strconv.ParseInt(idParam, 10, 64)
+	// fileN = fileN + 1
+	// wd = wd + "/" + idParam + fileExtension
 
 	id, err := strconv.ParseInt(idParam, 10, 64)
 	if err != nil {
@@ -233,6 +227,16 @@ func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Requ
 		log.Print(err)
 		http.Error(writer, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
+	}
+
+	fileNameNew := item.Image
+	wdd := "web/banners" + "/" + fileNameNew
+	//wdd := "c:/projects/http/web/banners" + "/" + fileNameNew
+	log.Print(wdd)
+	err = ioutil.WriteFile(wdd, content, 0600)
+	if err != nil {
+		log.Print(err)
+
 	}
 
 	data, err := json.Marshal(item)

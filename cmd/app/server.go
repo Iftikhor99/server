@@ -92,7 +92,8 @@ func (s *Server) handleGetBannerByID(writer http.ResponseWriter, request *http.R
 
 func (s *Server) handleGetAllBanners(writer http.ResponseWriter, request *http.Request) {
 	log.Print(request)
-
+	log.Print(request.Header)
+	log.Print(request.Body)
 	item, err := s.bannersSvc.All(request.Context())
 
 	if err != nil {

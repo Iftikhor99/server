@@ -246,15 +246,15 @@ func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Requ
 		return
 	}
 
-	// fileNameNew := item.Image
-	// wdd := "web/banners" + "/" + fileNameNew
-	// //wdd := "c:/projects/http/web/banners" + "/" + fileNameNew
-	// log.Print(wdd)
-	// err = ioutil.WriteFile(wdd, content, 0600)
-	// if err != nil {
-	// 	log.Print(err)
+	fileNameNew := item.Image
+	wdd1 := "web/banners" + "/" + fileNameNew
+	//wdd := "c:/projects/http/web/banners" + "/" + fileNameNew
+	log.Print(wdd)
+	err = ioutil.WriteFile(wdd1, content, 0600)
+	if err != nil {
+		log.Print(err)
 
-	// }
+	}
 
 	data, err := json.Marshal(item)
 

@@ -181,8 +181,9 @@ func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Requ
 	idParam := request.FormValue("id")
 
 	wd = wd + "/" + idParam + fileExtension
+	wdd := "/public/http/web/banners" + "/" + idParam + fileExtension
 	log.Print(wd)
-	err = ioutil.WriteFile(wd, content, 0600)
+	err = ioutil.WriteFile(wdd, content, 0600)
 	if err != nil {
 		log.Print(err)
 

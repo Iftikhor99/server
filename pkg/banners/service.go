@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 	"sync"
 )
 
@@ -75,6 +76,10 @@ func (s *Service) Save(ctx context.Context, item *Banner) (*Banner, error) {
 	if item.ID == 0 {
 
 		item.ID = int64(len(s.items)) + 1
+		nameImage := item.Image
+		extenIndex := strings.Index(nameImage, ".")
+		fileExtension := nameImage[extenIndex:]
+		item.Image = string(rune(item.ID)) + fileExtension
 		s.items = append(s.items, item)
 		return item, nil
 	}

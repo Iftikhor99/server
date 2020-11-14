@@ -54,11 +54,11 @@ func (s *Service) All(ctx context.Context) ([]*Banner, error) {
 	// 		return banner, nil
 	// 	}
 	// }
-	banners := s.items
-	if len(banners) == 0 {
-		return nil, errors.New("item not found")
-	}
-	return banners, nil
+	// banners := s.items
+	// if len(banners) == 0 {
+	// 	return nil, errors.New("item not found")
+	// }
+	return s.items, nil
 	//panic("not implemented")
 }
 

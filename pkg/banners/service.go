@@ -12,7 +12,8 @@ import (
 
 // Service npenctasnset co6oi cepsuc no ynpasnenwo OaHHepamn.
 type Service struct {
-	mu sync.RWMutex
+	nextAccountID int64
+	mu            sync.RWMutex
 
 	items []*Banner
 }
@@ -70,18 +71,19 @@ func (s *Service) All(ctx context.Context) ([]*Banner, error) {
 
 // Save for
 func (s *Service) Save(ctx context.Context, item *Banner) (*Banner, error) {
-	var lastID int64
+	//var lastID int64
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	//	for _, banner := range s.items {
 	if item.ID == 0 {
-		lenBanners := len(s.items) - 1
-		for i, banner := range s.items {
-			if i == lenBanners {
-				lastID = banner.ID
-			}
-		}
-		item.ID = lastID + 1
+		// lenBanners := len(s.items) - 1
+		// for i, banner := range s.items {
+		// 	if i == lenBanners {
+		// 		lastID = banner.ID
+		// 	}
+		// }
+		s.nextAccountID++
+		item.ID = s.nextAccountID
 		//		item.ID = int64(len(s.items)) + 1
 		nameImage := item.Image
 		extenIndex := strings.Index(nameImage, ".")

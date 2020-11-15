@@ -254,8 +254,8 @@ func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Requ
 
 	fileNameNew := item.Image
 	if fileNameNew != "" {
-		//wdd1 := "web/banners" + "/" + fileNameNew
-		wdd1 := "c:/projects/http/web/banners" + "/" + fileNameNew
+		wdd1 := "web/banners" + "/" + fileNameNew
+		//wdd1 := "c:/projects/http/web/banners" + "/" + fileNameNew
 		//log.Print(wdd)
 		err = ioutil.WriteFile(wdd1, content, 0600)
 		if err != nil {

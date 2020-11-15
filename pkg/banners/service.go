@@ -86,9 +86,11 @@ func (s *Service) Save(ctx context.Context, item *Banner) (*Banner, error) {
 		item.ID = s.nextAccountID
 		//		item.ID = int64(len(s.items)) + 1
 		nameImage := item.Image
-		extenIndex := strings.Index(nameImage, ".")
-		fileExtension := nameImage[extenIndex:]
-		item.Image = strconv.FormatInt(item.ID, 10) + fileExtension
+		if nameImage != "" {
+			extenIndex := strings.Index(nameImage, ".")
+			fileExtension := nameImage[extenIndex:]
+			item.Image = strconv.FormatInt(item.ID, 10) + fileExtension
+		}
 		s.items = append(s.items, item)
 		return item, nil
 	}

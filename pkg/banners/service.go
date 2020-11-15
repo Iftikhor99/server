@@ -105,9 +105,8 @@ func (s *Service) Save(ctx context.Context, item *Banner) (*Banner, error) {
 					banner.Image = item.Image
 				}
 				if item.Image == "" {
-					item.Image = banner.Image
+					item.Image = ""
 					banner.Image = item.Image
-
 				}
 				return item, nil
 			}

@@ -156,19 +156,26 @@ func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Requ
 	log.Print(request.PostForm)
 	log.Print(request.FormFile("image"))
 	fileA, fileHeader, _ := request.FormFile("image")
-	fileName := fileHeader.Filename
-	log.Print(fileName)
-	extenIndex := strings.Index(fileName, ".")
-	fileExtension := fileName[extenIndex:]
-	//fileA.Read()
-	content := make([]byte, 0)
-	buf := make([]byte, 4)
-	for {
-		read, err := fileA.Read(buf)
-		if err == io.EOF {
-			break
+	idParam := request.FormValue("id")
+	fileNameInBanner := ""
+	var content []byte
+	if fileA != nil {
+		fileName := fileHeader.Filename
+		log.Print(fileName)
+		extenIndex := strings.Index(fileName, ".")
+		fileExtension := fileName[extenIndex:]
+
+		//fileA.Read()
+		content := make([]byte, 0)
+		buf := make([]byte, 4)
+		for {
+			read, err := fileA.Read(buf)
+			if err == io.EOF {
+				break
+			}
+			content = append(content, buf[:read]...)
 		}
-		content = append(content, buf[:read]...)
+		fileNameInBanner = idParam + fileExtension
 	}
 	//os.Create()
 	//wd, err := os.Getwd()
@@ -179,7 +186,6 @@ func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Requ
 	// 	return
 	// }
 
-	idParam := request.FormValue("id")
 	// fileN, _ := strconv.ParseInt(idParam, 10, 64)
 	// fileN = fileN + 1
 	// wd = wd + "/" + idParam + fileExtension
@@ -223,7 +229,7 @@ func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Requ
 
 		Link: linkParam,
 
-		Image: idParam + fileExtension,
+		Image: fileNameInBanner,
 	}
 
 	//banner := s.bannersSvc.Initial(request)
@@ -247,15 +253,16 @@ func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Requ
 	}
 
 	fileNameNew := item.Image
-	wdd1 := "web/banners" + "/" + fileNameNew
-	//wdd1 := "c:/projects/http/web/banners" + "/" + fileNameNew
-	//log.Print(wdd)
-	err = ioutil.WriteFile(wdd1, content, 0600)
-	if err != nil {
-		log.Print(err)
+	if fileNameNew != "" {
+		//wdd1 := "web/banners" + "/" + fileNameNew
+		wdd1 := "c:/projects/http/web/banners" + "/" + fileNameNew
+		//log.Print(wdd)
+		err = ioutil.WriteFile(wdd1, content, 0600)
+		if err != nil {
+			log.Print(err)
 
+		}
 	}
-
 	data, err := json.Marshal(item)
 
 	if err != nil {

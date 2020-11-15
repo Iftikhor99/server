@@ -158,7 +158,7 @@ func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Requ
 	fileA, fileHeader, _ := request.FormFile("image")
 	idParam := request.FormValue("id")
 	fileNameInBanner := ""
-	var content []byte
+	content := make([]byte, 0)
 	if fileA != nil {
 		fileName := fileHeader.Filename
 		log.Print(fileName)
@@ -166,7 +166,7 @@ func (s *Server) handleSaveBanner(writer http.ResponseWriter, request *http.Requ
 		fileExtension := fileName[extenIndex:]
 
 		//fileA.Read()
-		content := make([]byte, 0)
+		//content := make([]byte, 0)
 		buf := make([]byte, 4)
 		for {
 			read, err := fileA.Read(buf)
